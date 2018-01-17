@@ -244,7 +244,8 @@ find :: (a -> Bool) -> List a -> Optional a
 --       Empty -> if p a then Full a else Empty
 --       x@(Full _) -> x
 --   ) Empty
-find p ls = headOr Empty (map (Full) (filter p ls))
+-- find p ls = headOr Empty (map (Full) (filter p ls))
+find p = foldRight (\a b -> bool b (Full a) (p a)) Empty
 
 -- | Determine if the length of the given list is greater than 4.
 --
@@ -276,6 +277,8 @@ lengthGT4 = (4 <) . length . take 5
 -- prop> let types = x :: Int in reverse (x :. Nil) == x :. Nil
 reverse :: List a -> List a
 reverse = foldLeft (flip (:.)) Nil
+-- reverse ls = foldRight (foldLeft (flip (:.))) Nil
+-- reverse ls = foldLeft (flip (:.)) Nil (take 15000 ls)
 
 -- | Produce an infinite `List` that seeds with the given value at its head,
 -- then runs the given function for subsequent elements
