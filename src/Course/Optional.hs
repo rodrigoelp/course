@@ -64,9 +64,8 @@ bindOptional _ Empty = Empty
 -- >>> Empty <+> Empty
 -- Empty
 (<+>) :: Optional a -> Optional a -> Optional a
-(<+>) Empty Empty = Empty
-(<+>) Empty (Full b) = Full b
-(<+>) (Full a) _ = Full a
+(<+>) x@(Full _) _ = x
+(<+>) Empty x = x
 
 applyOptional :: Optional (a -> b) -> Optional a -> Optional b
 applyOptional f a = bindOptional (\f' -> mapOptional f' a) f
