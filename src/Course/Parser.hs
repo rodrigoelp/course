@@ -491,12 +491,13 @@ phoneParser = digit >>= \a -> phoneBodyParser >>= \b -> is '#' >>= \_ -> pure (a
 -- Result > rest< Person {age = 123, firstName = "Fred", surname = "Clarkson", smoker = 'y', phone = "123-456.789"}
 personParser :: Parser Person
 personParser =
-  ageParser >>= \a ->
-    spaces1 *> firstNameParser >>= \b ->
-      spaces1 *> surnameParser >>= \c ->
-        spaces1 *> smokerParser >>= \d ->
-          spaces1 *> phoneParser >>= \e ->
-            pure (Person a b c d e)
+  Person <$>
+  ageParser <*>
+    spaces1 *> firstNameParser <*>
+      spaces1 *> surnameParser <*>
+        spaces1 *> smokerParser <*>
+          spaces1 *> phoneParser
+            
 
 -- Make sure all the tests pass!
 
